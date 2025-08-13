@@ -1,13 +1,17 @@
 const {test} = require('@playwright/test');
 
 
-test('First  Playwright test',async ()=>
+test('First Playwright test',async ({browser})=>
 {
-//Playwright code
-//Step 1 - Open Browser
+    //Chrome - plugins / cookies
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
-//Step 2 - Enter username/password 2 seconds
+});
 
-//Step 3 - Click login button
+test('Page Playwright test',async ({page})=>
+{
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
 
 });
