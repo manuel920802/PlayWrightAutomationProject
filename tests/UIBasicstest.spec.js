@@ -12,6 +12,6 @@ test('First Playwright test',async ({browser})=>
 
 test('Page Playwright test',async ({page})=>
 {
-    await page.goto("https//:google.com");
+    await page.goto("https://www.google.com/");
 
 });
