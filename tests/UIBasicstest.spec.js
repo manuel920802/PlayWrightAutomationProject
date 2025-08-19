@@ -55,3 +55,44 @@ test('Page Playwright test',async ({page})=>
     // Assertion to check if title matches
     await expect(page).toHaveTitle("Google");
 });
+
+test.only('UI controls',async ({page})=>
+{
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+    
+     //Locators
+    const username = page.locator('#username');
+    const password = page.locator('[type=password]');
+    const signIn = page.locator('#signInBtn');
+    const dropdown = page.locator("select.form-control");
+    const radioButton = page.locator(".radiotextsty");
+    const okButton = page.locator("#okayBtn");
+    const checkBox = page.locator("#terms");
+    const documentLink = page.locator("[href*='documents-request']");
+
+    //Select radio button and click on last option
+    await radioButton.last().click();
+    //Select dropdown option
+    await dropdown.selectOption("Consultant");
+    //Click OK button in popup
+    await okButton.click();
+
+    //Print in console if radiobutton is checked
+    //console.log(await radioButton.last().isChecked());
+
+    //Assert if radio button is checked
+    await expect(radioButton.last()).toBeChecked();
+    //Click on checkbox
+    await checkBox.click();
+    //Assert if checkbox is checked
+    await expect(checkBox).toBeChecked();
+    //Uncheck the checkbox
+    await checkBox.uncheck();
+    //Assert checkbox is unchecked
+    expect(await checkBox.isChecked()).toBeFalsy();
+    //Assert if link text is blinking
+    await expect(documentLink).toHaveAttribute("class","blinkingText");
+
+    //Pause current execution
+    //await page.pause();
+});
