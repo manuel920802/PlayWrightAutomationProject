@@ -1,4 +1,5 @@
 const {test, expect} = require('@playwright/test');
+const { text } = require('stream/consumers');
 
 
 test('First Playwright test',async ({browser})=>
@@ -56,7 +57,7 @@ test('Page Playwright test',async ({page})=>
     await expect(page).toHaveTitle("Google");
 });
 
-test.only('UI controls',async ({page})=>
+test('UI controls',async ({page})=>
 {
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
     
@@ -95,4 +96,33 @@ test.only('UI controls',async ({page})=>
 
     //Pause current execution
     //await page.pause();
+});
+
+test.only('Child windows handle',async ({browser})=>
+{
+    const context = await browser.newContext();
+    const page = await context.newPage();
+
+    await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
+
+    //Locators
+    const documentLink = page.locator("[href*='documents-request']");
+    const username = page.locator('#username');
+
+    const [newPage] = await Promise.all(
+    [
+        context.waitForEvent('page'), //Wait for new page event using listener - listen for any new page pending,rejected,filfilled
+        documentLink.click(), //New page is opened
+    ])
+
+    //Get text from page
+    const textCont = await newPage.locator(".red").textContent();
+    //Split text from page
+    const arrayText = textCont.split("@")
+    //Split only email text
+    const emailText = arrayText[1].split(" ") [0]
+    //Go back to parent page and type extracted email from child page
+    await username.fill(emailText);
+    //Get typed text in username field and print in console
+    console.log(await username.inputValue());
 });
