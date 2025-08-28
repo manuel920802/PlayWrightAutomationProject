@@ -13,9 +13,10 @@ test('Client App Login Test', async ({page})=>
     const products = page.locator(".card-body");
     const productName = 'ADIDAS ORIGINAL'
     const cartButton = page.locator("[routerlink*='cart']");
+    const email = "manuel76046@hotmail.com";
     
     //Enter user credentials and login
-    await username.fill("manuel76046@hotmail.com");
+    await username.fill(email);
     await password.fill("Playwright123");
     await loginButton.click();
 
@@ -46,5 +47,44 @@ test('Client App Login Test', async ({page})=>
     const bool = await page.locator("h3:has-text('ADIDAS ORIGINAL')").isVisible();
     //Assert if product name is visible
     expect(bool).toBeTruthy();
+    //Click on "Checkout" button
+    await page.locator("text=Checkout").click();
+    //Type country in text selected field slowly and provide delay of 150 mls between each key press
+    await page.locator("[placeholder*='Country']").pressSequentially("ind", {delay: 150});
+    //Click on suggested option by iterating on each one
+    const countryDropdown = page.locator(".ta-results");
+    await countryDropdown.waitFor();
+    const optionsCount = await countryDropdown.locator("button").count();
+    for(let i=0; i<optionsCount; ++i)
+    {
+        const text = await countryDropdown.locator("button").nth(i).textContent();
+        if(text === " India")
+        {
+            //Click option which matches provided text
+            await countryDropdown.locator("button").nth(i).click();
+            break;
+        }
+    }
+    //Assert email is correct
+    expect(page.locator(".user__name [type='text']").first()).toHaveText(email);
+    //Select expiry month dropdown field
+    const monthDropdown = page.locator("select.ddl").first();
+    await monthDropdown.waitFor();
+    await monthDropdown.click();
+    const optionsMonth = await monthDropdown.locator("option").count();
+    for(let i=0; i<optionsMonth; ++i)
+    {
+        const monthText = await monthDropdown.locator("option").nth(i).textContent();
+        if(monthText === "08")
+        {
+            //Click month option which matches provided text
+            await monthDropdown.locator("option").nth(i).click();
+            break;
+        } 
+    }
+    await page.pause();
+    //Click on Place order button
+    //await page.locator(".action__submit").click();
+
 
 });
