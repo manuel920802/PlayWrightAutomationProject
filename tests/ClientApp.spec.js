@@ -13,6 +13,7 @@ test('Client App Login Test', async ({page})=>
     const products = page.locator(".card-body");
     const productName = 'ADIDAS ORIGINAL'
     const cartButton = page.locator("[routerlink*='cart']");
+    const ordersButton = page.getByRole("button", {name: "ORDERS"})
     const email = "manuel76046@hotmail.com";
     
     //Enter user credentials and login
@@ -27,7 +28,6 @@ test('Client App Login Test', async ({page})=>
 
     //Get all page card titles
     console.log(await cardTitles.allTextContents());
-
     //Iterate between all existing products and search for specified one
     const count = await products.count();
     for(let i =0; i<count; ++i)
@@ -47,6 +47,7 @@ test('Client App Login Test', async ({page})=>
     const bool = await page.locator("h3:has-text('ADIDAS ORIGINAL')").isVisible();
     //Assert if product name is visible
     expect(bool).toBeTruthy();
+
     //Click on "Checkout" button
     await page.locator("text=Checkout").click();
     //Type country in text selected field slowly and provide delay of 150 mls between each key press
@@ -66,25 +67,66 @@ test('Client App Login Test', async ({page})=>
         }
     }
     //Assert email is correct
-    expect(page.locator(".user__name [type='text']").first()).toHaveText(email);
+    await expect(page.locator(".user__name [type='text']").first()).toHaveText(email);
+    //Type in "CCV code" text field
+    await page.locator("input[type='text']").nth(1).fill("123");
+    //Type in "Name on card" text field
+    await page.locator("input[type='text']").nth(2).fill("Manuel Paez");
+    //Type in "Coupon" text field 
+    await page.locator("input[name='coupon']").fill("rahulshettyacademy");
+    //Click on "Apply coupon" button
+    await page.locator("button[type='submit']").click();
+    //Wait for coupon applied text to appear
+    const couponApplied = page.locator("p[class='mt-1 ng-star-inserted']");
+    await couponApplied.waitFor();
+    //Assert coupon was applied
+    const isCouponApplied = await couponApplied.isVisible();
+    expect(isCouponApplied).toBeTruthy();
     //Select expiry month dropdown field
-    const monthDropdown = page.locator("select.ddl").first();
+    const monthDropdown = page.locator("select").first();
     await monthDropdown.waitFor();
-    await monthDropdown.click();
-    const optionsMonth = await monthDropdown.locator("option").count();
-    for(let i=0; i<optionsMonth; ++i)
+    await monthDropdown.selectOption("08");
+    //Select expiry day dropdown field
+    const dayDropdown = page.locator("select").last();
+    await dayDropdown.waitFor();
+    await dayDropdown.selectOption("20");
+
+    //Click on "Place order" button
+    await page.locator(".action__submit").click();
+    //Assert order was placed successfully by checking for "Thank you for the order" title
+    const thankYouTitle = page.locator(".hero-primary");
+    await expect(thankYouTitle).toHaveText(" Thankyou for the order. ");
+    //Get order ID text
+    const orderId = page.locator(".em-spacer-1 .ng-star-inserted");
+    const orderIdText = await orderId.textContent();
+    //Print orderId in console
+    console.log(orderIdText);
+
+    //Click on "Orders" menu item
+    await ordersButton.click();
+    //Wait for table to appear
+    await page.locator("tbody").waitFor();
+    //Assert orders are loaded sucessfully by checking for "Your orders" title
+    const yourOrdersTitle = page.locator(".container h1");
+    await expect(yourOrdersTitle).toHaveText("Your Orders");
+    //Iterate through the table
+    const rows = page.locator("tbody tr");
+    for(let i=0; i<await rows.count(); ++i)
     {
-        const monthText = await monthDropdown.locator("option").nth(i).textContent();
-        if(monthText === "08")
-        {
-            //Click month option which matches provided text
-            await monthDropdown.locator("option").nth(i).click();
+        //Find all rows in table and get text from orderId
+        const rowOrderId = await rows.nth(i).locator("th").textContent();
+        //If found orderId matches the provided one for our order
+        if(orderIdText.includes(rowOrderId))
+        {   
+            //The find the first button in row and click on it
+            await rows.nth(i).locator("button").first().click();
             break;
-        } 
+        }
     }
+    //Assert orderId in summary page matches with provided orderId from previous order
+    const orderIdSummaryText = await page.locator(".col-text").textContent();
+    expect(orderIdText.includes(orderIdSummaryText)).toBeTruthy();  
     await page.pause();
-    //Click on Place order button
-    //await page.locator(".action__submit").click();
 
 
 });
