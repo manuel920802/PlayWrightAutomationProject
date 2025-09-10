@@ -1,51 +1,23 @@
 const {test, expect, request} = require('@playwright/test');
+const {APiUtils} = require('./utils/APiUtils');
 const loginPayload = {userEmail:"manuel76046@hotmail.com",userPassword:"Playwright123"};
 const orderPayload = {orders: [{country: "Colombia", productOrderedId: "68a961459320a140fe1ca57a"}]};
-let loginToken;
-let orderId;
+let response;
 
 test.beforeAll( async ()=> 
 {
-    //Login API
    const apiContext = await request.newContext();
-   const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login",
-    {
-        data:loginPayload
-    })
-    // Assert if success status code (200, 201) is returned
-    expect(loginResponse.ok()).toBeTruthy();
-    const loginResponseJson = await loginResponse.json();
-    loginToken = loginResponseJson.token;
-    console.log(loginToken);
+   const apiUtils = new APiUtils(apiContext, loginPayload);
+   response = await apiUtils.createOrder(orderPayload);
+})
 
-
-    //Create Order API
-    const orderResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/order/create-order",
-    {
-        data:orderPayload, 
-        headers: {
-                    'Authorization' : loginToken, 
-                    'Content-Type' : 'application/json'
-                },
-
-    })
-    const orderResponseJson = await orderResponse.json();
-    console.log(orderResponseJson);
-    orderId = orderResponseJson.orders[0];
-
-});
-
-test.beforeEach( ()=> 
-{
-
-});
-
+//Create order is successful
 test('Place the order', async ({page})=>
 {
     //Set token (inject) in local storage
     await page.addInitScript(value => {
         window.localStorage.setItem('token', value);
-    }, loginToken);
+    }, response.token);
 
     //Open dashboard page
     await page.goto("https://rahulshettyacademy.com/client/");
@@ -67,7 +39,7 @@ test('Place the order', async ({page})=>
         //Find all rows in table and get text from orderId
         const rowOrderId = await rows.nth(i).locator("th").textContent();
         //If found orderId matches the provided one for our order
-        if(orderId.includes(rowOrderId))
+        if(response.orderId.includes(rowOrderId))
         {   
             //The find the first button in row and click on it
             await rows.nth(i).locator("button").first().click();
@@ -77,5 +49,5 @@ test('Place the order', async ({page})=>
     //Assert orderId in summary page matches with provided orderId from previous order
     const orderIdSummaryText = await page.locator(".col-text").textContent();
     await page.pause();
-    expect(orderId.includes(orderIdSummaryText)).toBeTruthy(); 
+    expect(response.orderId.includes(orderIdSummaryText)).toBeTruthy(); 
 });
