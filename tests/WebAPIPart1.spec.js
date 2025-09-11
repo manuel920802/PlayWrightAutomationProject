@@ -1,5 +1,5 @@
 const {test, expect, request} = require('@playwright/test');
-const {APiUtils} = require('./utils/APiUtils');
+const {APIUtils} = require('./utils/APIUtils');
 const loginPayload = {userEmail:"manuel76046@hotmail.com",userPassword:"Playwright123"};
 const orderPayload = {orders: [{country: "Colombia", productOrderedId: "68a961459320a140fe1ca57a"}]};
 let response;
@@ -7,7 +7,7 @@ let response;
 test.beforeAll( async ()=> 
 {
    const apiContext = await request.newContext();
-   const apiUtils = new APiUtils(apiContext, loginPayload);
+   const apiUtils = new APIUtils(apiContext, loginPayload);
    response = await apiUtils.createOrder(orderPayload);
 })
 
@@ -48,6 +48,5 @@ test('Place the order', async ({page})=>
     }
     //Assert orderId in summary page matches with provided orderId from previous order
     const orderIdSummaryText = await page.locator(".col-text").textContent();
-    await page.pause();
     expect(response.orderId.includes(orderIdSummaryText)).toBeTruthy(); 
 });
