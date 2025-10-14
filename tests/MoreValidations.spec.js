@@ -27,3 +27,23 @@ test("Popup Validations", async ({page})=>
     await page.goBack();
     await page.goForward(); */
 })
+
+test("Screenshot & Visual Comparison", async ({page})=>
+{
+    await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
+    await expect(page.locator("#displayed-text")).toBeVisible();
+    //Take screenshot of an specific locator
+    await page.locator('#displayed-text').screenshot({path: 'partialScreenshot.png'});
+    await page.locator("#hide-textbox").click();
+    //Take screenshot of the whole page
+    await page.screenshot({path: 'screenshot.png'});
+    await expect(page.locator("#displayed-text")).toBeHidden();
+})
+
+test.only("Visual Testing", async ({page})=>
+{
+    await page.goto("https://www.google.com/");
+    //Take screenshot of landing page and compare against previously taken screenshot to see if they match
+    expect(await page.screenshot()).toMatchSnapshot('landing.png');
+})
+
