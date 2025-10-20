@@ -1,54 +1,38 @@
 const {test, expect} = require('@playwright/test');
-const {LoginPage} = require('../pageobjects/LoginPage');
+const {POManager} = require('../pageobjects/POManager');
 
 test('Client App Login Test', async ({page})=>
 {
-    //Create object of LoginPage class
-    const loginPage = new LoginPage(page);
-
-    //Local variables to store username and password
+    //Local variables to store values
     const username = "manuel76046@hotmail.com";
     const password = "Playwright123";
+    const productName = 'ADIDAS ORIGINAL';
 
-    //Locators
-    
-    const products = page.locator(".card-body");
-    const productName = 'ADIDAS ORIGINAL'
-    const cartButton = page.locator("[routerlink*='cart']");
-    const ordersButton = page.getByRole("button", {name: "ORDERS"})
+    //Create Object of POManager class
+    const poManager = new POManager(page);
 
-    loginPage.goToLoginPage(); 
-    loginPage.validLogin(username,password);
+    //Create object of LoginPage class using POManager getter method
+    const loginPage = poManager.getLoginPage();
+    //Go to login page
+    await loginPage.goToLoginPage(); 
+    //Login with provided credentials
+    await loginPage.validLogin(username,password);
 
-    //Wait for all API calls to be made in the page after login
-    await page.waitForLoadState("networkidle");
-    //Wait for first element of provided locator is loaded
-    await cardTitles.first().waitFor();
+    //Create object of DashBoardPage class using POManager getter method
+    const dashBoardPage = poManager.getDashBoardPage();
+    //Go to dashboard page and add provided product to cart
+    await dashBoardPage.searchProductAddCart(productName);
+    //Go to cart page
+    await dashBoardPage.goToCart();
 
-    //Get all page card titles
-    console.log(await cardTitles.allTextContents());
-    //Iterate between all existing products and search for specified one
-    const count = await products.count();
-    for(let i =0; i<count; ++i)
-    {
-        if(await products.nth(i).locator("b").textContent() === productName)
-        {
-            //Add product to cart
-            await products.nth(i).locator("text= Add To Cart").click();
-            break;
-        }
-    }
-    //Click cart button
-    await cartButton.click();
-    //Wait for first element of provided locator is loaded
-    await page.locator("div li").first().waitFor();
-    //Check for product name is visible on page
-    const bool = await page.locator("h3:has-text('ADIDAS ORIGINAL')").isVisible();
-    //Assert if product name is visible
-    expect(bool).toBeTruthy();
+    //Create object of CartPage class using POManager getter method
+    const cartPage = poManager.getCartPage();
+    //Check if added to cart product provided name is displayed
+    cartPage.verifyProductIsDisplayed(productName);
+    //Go to dashboard page
+    cartPage.checkOut();
 
-    //Click on "Checkout" button
-    await page.locator("text=Checkout").click();
+
     //Type country in text selected field slowly and provide delay of 150 mls between each key press
     await page.locator("[placeholder*='Country']").pressSequentially("ind", {delay: 150});
     //Click on suggested option by iterating on each one

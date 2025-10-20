@@ -17,6 +17,8 @@ async validLogin(username,password){
     await this.userName.fill(username);
     await this.passWord.fill(password);
     await this.loginButton.click();
+    //Wait for all API calls to be made in the page after login
+    //await this.page.waitForLoadState('networkidle');
 }
 }
 module.exports = {LoginPage};
