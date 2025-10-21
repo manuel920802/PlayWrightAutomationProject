@@ -4,6 +4,7 @@ constructor(page){
     this.products = page.locator(".card-body");
     this.productsTitles = page.locator(".card-body b");
     this.cartButton = page.locator("[routerlink*='cart']");
+    this.ordersButton = page.getByRole("button", {name: "ORDERS"});
 }
 
 async searchProductAddCart(productName){
@@ -24,6 +25,11 @@ async searchProductAddCart(productName){
                 break;
             }
         }
+}
+
+async goToOrders(){
+    //Click on "Orders" menu item
+    await this.ordersButton.click();
 }
 
 async goToCart(){

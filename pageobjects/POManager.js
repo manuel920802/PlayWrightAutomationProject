@@ -1,6 +1,8 @@
 const {LoginPage} = require('./LoginPage');
 const {DashBoardPage} = require('./DashBoardPage');
 const {CartPage} = require('./CartPage');
+const {OrdersReviewPage} = require('./OrdersReviewPage');
+const {OrdersHistoryPage} = require('./OrdersHistoryPage');
 
 class POManager{
 
@@ -12,6 +14,10 @@ constructor(page){
     this.dashBoardPage = new DashBoardPage(this.page);
     //Create object of CartPage class
     this.cartPage = new CartPage(this.page);
+    //Create object of OrdersReviewPage class
+    this.ordersReviewPage = new OrdersReviewPage(this.page);
+    //Create object of OrderHistoryPage class
+    this.ordersHistoryPage = new OrdersHistoryPage(this.page);
 }
 
 getLoginPage(){
@@ -26,6 +32,13 @@ getCartPage(){
     return this.cartPage;
 }
 
+getOrdersReviewPage(){
+    return this.ordersReviewPage;
+}
+
+getOrdersHistoryPage(){
+    return this.ordersHistoryPage;
+}
 
 }
 module.exports ={POManager};
