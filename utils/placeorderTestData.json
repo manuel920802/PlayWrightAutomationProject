@@ -1,0 +1,20 @@
+[
+    {
+    "username" : "manuel76046@hotmail.com",
+    "password" : "Playwright123",
+    "productName" : "ADIDAS ORIGINAL",
+    "ccvCode" : "123",
+    "nameOnCard" : "Manuel Paez",
+    "couponCode" : "rahulshettyacademy"  
+    },
+
+    {
+    "username" : "anshika@gmail.com",
+    "password" : "Iamking@00",
+    "productName" : "Zara Coat 4",
+    "ccvCode" : "456",
+    "nameOnCard" : "Anshika Tester",
+    "couponCode" : "rahulshettyacademy"  
+    }
+
+]
