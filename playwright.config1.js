@@ -1,0 +1,48 @@
+// @ts-check
+import { chromium, defineConfig, devices } from '@playwright/test';
+
+/**
+ * @see https://playwright.dev/docs/test-configuration
+ */
+const config = defineConfig({
+  testDir: './tests', 
+  /* Maximum time one test can run in current project */
+  timeout: 50 * 1000,
+  
+   /* Maximum time for assertions in current project */
+  expect : {
+   timeout: 5000
+  },
+
+  reporter : 'html',
+  projects : [
+    {
+      name: 'chrome',
+      use: {
+      browserName : 'chromium',
+      headless : false,
+      screenshot : 'only-on-failure',
+      //Accept SSL certificate
+      ignoreHTTPSErrors : true,
+      //Allow location,etc permissions
+      permissions : ['geolocation'],
+      trace : 'retain-on-failure', //off, on
+      video: 'retain-on-failure',  //on/off/on-first-retry
+      //viewport : {width:720,height:720}
+      //...devices['Galaxy S24']
+      }
+      },
+      {
+      name: 'safari',
+      use: {
+      browserName : 'firefox',
+      headless : true,
+      screenshot : 'on',
+      trace : 'on', //off, on
+      //...devices['iPhone 15 Plus']
+      }
+    }
+  ]
+});
+module.exports = config
+
