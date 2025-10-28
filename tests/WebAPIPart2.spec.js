@@ -150,7 +150,7 @@ test('Test Case 1', async ()=>
     expect(orderIdText.includes(orderIdSummaryText)).toBeTruthy();  
 });
 
-test('Test Case 2', async ()=>
+test('@API Test Case 2', async ()=>
 {
     //Create new page using tokens and cookies from JSON file
     const page = await webContext.newPage();

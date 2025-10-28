@@ -6,6 +6,10 @@ import { chromium, defineConfig, devices } from '@playwright/test';
  */
 const config = defineConfig({
   testDir: './tests', 
+  //How many times you want the fail tests to be re-run
+  retries :1,
+  //Parallel testing workers
+  workers :3,
   /* Maximum time one test can run in current project */
   timeout: 50 * 1000,
   
@@ -28,7 +32,7 @@ const config = defineConfig({
       permissions : ['geolocation'],
       trace : 'retain-on-failure', //off, on
       video: 'retain-on-failure',  //on/off/on-first-retry
-      //viewport : {width:720,height:720}
+      viewport : {width:720,height:720}
       //...devices['Galaxy S24']
       }
       },

@@ -1,5 +1,5 @@
 const {test, expect, request} = require('@playwright/test');
-const {APIUtils} = require('./utils/APIUtils');
+const {APIUtils} = require('../utils/APIUtils');
 const loginPayload = {userEmail:"manuel76046@hotmail.com",userPassword:"Playwright123"};
 const orderPayload = {orders: [{country: "Colombia", productOrderedId: "68a961459320a140fe1ca57a"}]};
 let response;
@@ -12,7 +12,7 @@ test.beforeAll( async ()=>
 })
 
 //Create order is successful
-test('Place the order', async ({page})=>
+test('@API Place the order', async ({page})=>
 {
     //Set token (inject) in local storage
     await page.addInitScript(value => {

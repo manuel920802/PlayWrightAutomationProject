@@ -2,7 +2,7 @@ const {test, expect} = require('@playwright/test');
 const { text } = require('stream/consumers');
 
 
-test('First Playwright test',async ({browser})=>
+test('@Web First Playwright test',async ({browser})=>
 {
     //Chrome - plugins / cookies
     const context = await browser.newContext();
@@ -57,7 +57,7 @@ test('Page Playwright test',async ({page})=>
     await expect(page).toHaveTitle("Google");
 });
 
-test('UI controls',async ({page})=>
+test('@Web UI controls',async ({page})=>
 {
     await page.goto("https://rahulshettyacademy.com/loginpagePractise/");
     

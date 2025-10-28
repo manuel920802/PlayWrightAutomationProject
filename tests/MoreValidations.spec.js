@@ -1,6 +1,12 @@
 const {test,expect} = require('@playwright/test')
 
-test("Popup Validations", async ({page})=>
+//Run tests in same test file in parallel instead of sequentially(default)
+//test.describe.configure({mode:'parallel'});
+
+//Run tests in same test file when one test depends on the result of the previous test
+//test.describe.configure({mode:'serial'});
+
+test("@Web Popup Validations", async ({page})=>
 {
     await page.goto("https://rahulshettyacademy.com/AutomationPractice/");
 
@@ -40,7 +46,7 @@ test("Screenshot & Visual Comparison", async ({page})=>
     await expect(page.locator("#displayed-text")).toBeHidden();
 })
 
-test.only("Visual Testing", async ({page})=>
+test("Visual Testing", async ({page})=>
 {
     await page.goto("https://www.google.com/");
     //Take screenshot of landing page and compare against previously taken screenshot to see if they match
