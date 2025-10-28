@@ -14,7 +14,14 @@ const config = defineConfig({
    timeout: 5000
   },
 
-  reporter : 'html',
+  //Html report: playwright-report/index.html file (default)
+  //Line report: Generate html input to be able to generate allure report
+  //Alure report: allure-report/index.html file 
+  //Generate using cmd: 
+  //npx playwright test --reporter=line,allure-playwright
+  //allure generate ./allure-results
+  //Open using cmd: allure open ./allure-report
+  reporter: [['html'], ['line'], ['allure-playwright']],
 
   use: {
     browserName : 'chromium',
