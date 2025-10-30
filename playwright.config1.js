@@ -39,11 +39,11 @@ const config = defineConfig({
       {
       name: 'safari',
       use: {
-      browserName : 'firefox',
+      browserName : 'webkit',
       headless : true,
-      screenshot : 'on',
+      screenshot : 'off',
       trace : 'on', //off, on
-      //...devices['iPhone 15 Plus']
+      ...devices['iPhone 15 Plus']
       }
     }
   ]

@@ -65,7 +65,7 @@ test(`@Web Client App Login for ${data.productName}`, async ({page})=>
 });
 }
 
-customtest.only('Client App Login', async ({page,testDataForOrder})=>
+customtest('Client App Login', async ({page,testDataForOrder})=>
 {
     //Create Object of POManager class
     const poManager = new POManager(page);

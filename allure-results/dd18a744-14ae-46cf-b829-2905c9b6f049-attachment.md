@@ -1,0 +1,67 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - 'heading "RAHUL SHETTY ACADEMY PRACTISE Note: Data will be reset after page refresh." [level=1]'
+- table:
+  - rowgroup:
+    - row "S No ▲ Fruit Name ▲ Color ▲ Price ▲ Season ▲":
+      - columnheader "S No ▲"
+      - columnheader "Fruit Name ▲"
+      - columnheader "Color ▲"
+      - columnheader "Price ▲"
+      - columnheader "Season ▲"
+  - rowgroup:
+    - row "1 Mango Yellow 299 Summer":
+      - cell "1"
+      - cell "Mango"
+      - cell "Yellow"
+      - cell "299"
+      - cell "Summer"
+    - row "2 Apple Red 345 Winter":
+      - cell "2"
+      - cell "Apple"
+      - cell "Red"
+      - cell "345"
+      - cell "Winter"
+    - row "3 Papaya Orange 187 Spring":
+      - cell "3"
+      - cell "Papaya"
+      - cell "Orange"
+      - cell "187"
+      - cell "Spring"
+    - row "4 Banana Yellow 69 All":
+      - cell "4"
+      - cell "Banana"
+      - cell "Yellow"
+      - cell "69"
+      - cell "All"
+    - row "5 Kivi Green 399 Winter":
+      - cell "5"
+      - cell "Kivi"
+      - cell "Green"
+      - cell "399"
+      - cell "Winter"
+    - row "6 Orange Orange 199 Summer":
+      - cell "6"
+      - cell "Orange"
+      - cell "Orange"
+      - cell "199"
+      - cell "Summer"
+- navigation:
+  - text: "Rows per page:"
+  - combobox "Rows per page:":
+    - option "10" [selected]
+    - option "15"
+    - option "20"
+    - option "25"
+    - option "30"
+  - img
+  - text: 1-6 of 6
+  - button "First Page" [disabled]
+  - button "Previous Page" [disabled]
+  - button "Next Page" [disabled]
+  - button "Last Page" [disabled]
+- button "Download"
+- button "Choose File"
+```
