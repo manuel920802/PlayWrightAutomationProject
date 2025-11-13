@@ -1,5 +1,4 @@
 const {test, expect} = require('@playwright/test');
-const { text } = require('stream/consumers');
 
 
 test('@Web First Playwright test',async ({browser})=>
